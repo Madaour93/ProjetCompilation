@@ -1,23 +1,23 @@
-%token NOMBRE PLUS MOINS FOIS GPAREN DPAREN PT_VIRG EOL
+%{
+    open AST
+%}
+%token<float> NOMBRE
+%token  PLUS MOINS FOIS GPAREN DPAREN  MODULO PT_VIRG EOL
 %left PLUS MOINS
-%left FOIS 
-%type <unit> main expression terme facteur
+%left FOIS MODULO
+%nonassoc UMOINS
+%type <AST.expression_a> main expression
 %start main
 %%
 main:
-expression EOL {}
+expression EOL { $1 }
 ;
 expression:
-expression PLUS terme {}
-| expression MOINS terme {}
-| terme {}
-;
-terme:
-terme FOIS facteur {}
-| facteur {}
-;
-facteur:
-GPAREN expression DPAREN {}
-| MOINS facteur {}
-| NOMBRE {}
+expression PLUS expression { Plus ($1,$3) }
+| expression MOINS expression { Moins($1,$3) }
+| expression FOIS expression { Mult ($1,$3) }
+| expression MODULO expression {Mod ($1,$3) }
+| GPAREN expression DPAREN { $2 }
+| MOINS expression %prec UMOINS { Neg $2 }
+| NOMBRE { Num $1 }
 ;
