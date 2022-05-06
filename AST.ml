@@ -1,4 +1,5 @@
 type expression_a =
+    | Affect of string * expression_a * int
     | Plus  of expression_a * expression_a * int
     | Moins of expression_a * expression_a * int
     | Mult  of expression_a * expression_a * int 
@@ -15,6 +16,7 @@ type expression_a =
     | Inf   of expression_a * expression_a * int
     | Non of expression_a * int
     | Bool of bool
+    | Var of string
     | Nan of string
 ;;
 let convert_to_num = String.concat "\n" ["TypeOf";
@@ -43,6 +45,7 @@ let convert_to_bool = String.concat "\n" ["TypeOf";
 
 let get_size_expression expression =
   match expression with
+  | Affect (_,_,i) -> i
   | Plus  (_,_,i) -> i
   | Or  (_,_,i) -> i
   | And  (_,_,i) -> i
@@ -60,6 +63,7 @@ let get_size_expression expression =
   | Nan _       -> 1
   | Num    _    -> 1
   | Bool    _    -> 1
+  | Var    _    -> 1
 
 ;;
 
@@ -68,6 +72,7 @@ let get_size_expression expression =
 
 let rec expression_code expression =
   match expression with
+  | Affect (v,e,_) -> Printf.sprintf "%s\n%s %s\n%s %s" (expression_code e) "SetVar" v "GetVar" v
   | Plus  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "AddiNb"
   | Moins (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "SubsNb"
   | Mult  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "MultNb"
@@ -94,6 +99,7 @@ let rec expression_code expression =
   
   | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
   | Bool    b    -> Printf.sprintf "%s %B" "CsteBo" b
+  | Var    s    -> Printf.sprintf "%s %s" "GetVar" s
   | Nan u     -> "CsteNb NaN"
   
   let print_gen_code programme =

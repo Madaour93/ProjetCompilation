@@ -28,5 +28,7 @@ rule token = parse
 | '(' { GPAREN }
 | ')' { DPAREN }
 | "NaN"         { NAN }
+| (['a'-'z']| ['A'-'Z'])(['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])*  as lexem  { VAR(lexem) }
+| '='           { AFFECT }
 | eof { raise Eof }
 | _ { raise TokenInconu }

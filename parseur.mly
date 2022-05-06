@@ -4,7 +4,9 @@
 
 %token <float> NOMBRE
 %token <bool> BOOL
-%token  EGAL SUP SUP_EGAL INF INF_EGAL NON NON_EGAL NOMBRE NAN OR AND  PLUS MOINS FOIS GPAREN DPAREN  MODULO PT_VIRG EOL
+%token <string> VAR
+%token  EGAL SUP SUP_EGAL INF INF_EGAL NON NON_EGAL NOMBRE NAN OR AND  VAR AFFECT PLUS MOINS FOIS GPAREN DPAREN  MODULO PT_VIRG EOL
+%right AFFECT
 %left OR
 %left AND
 %left EGAL INF INF_EGAL
@@ -19,6 +21,7 @@ main:
 expression EOL { $1 }
 ;
 expression:
+|VAR AFFECT expression   { Affect($1, $3, (get_size_expression $3) + 2)}
 | expression OR expression        { Or($1, $3, (get_size_expression $1) + (get_size_expression $3) + 3 + size_convert_to_bool)}
 | expression AND expression        { And($1, $3, (get_size_expression $1) + (get_size_expression $3) + 2 + size_convert_to_bool)}
 | expression EGAL expression      { Egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2)}
@@ -37,4 +40,5 @@ expression:
 | NAN                           { Nan "NaN" }
 | NOMBRE { Num $1 }
 | BOOL   { Bool $1 }
+| VAR    { Var $1 }
 ;

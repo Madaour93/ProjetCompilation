@@ -15,6 +15,10 @@ un commentaire */
 
 # fragment 1.3 
 les opérateur OR et AND sont possible 
+# fragment 2.0 
+les variables commencent par une lettre minuscule et peuvent être composées de lettres,
+chiffres, souligne "_". Les variables sont instanciées via x = expr ; où expr
+est n'importe quelle expression
 # Pour compiler:
 ocamllex lexeur.mll
 	ocamlyacc parseur.mly
