@@ -3,7 +3,18 @@
 un programme avec seulement les expression arithmétique Addition, multiplication, négation et soustration avec le point virgule comme fin de programme.
 # fragmant O.1 
 les expression avec modulo sont maintenant accepte et les nombres flottant auussi 
+# fragment 0.2
+les opereateur de comparaison true, flase >,>=,<,<=,! et <>(non egal)
+# fragment 1.0
+on accepte n'iporte quel nombre et le NAN
+# fragment 1.1
+on peut faire maintenant des commentaire uniligne du genre //ceci est commentaire. et les commentaire multiligne du genre /* ceci est 
+un commentaire */
 
+# fragment 1.2
+
+# fragment 1.3 
+les opérateur OR et AND sont possible 
 # Pour compiler:
 ocamllex lexeur.mll
 	ocamlyacc parseur.mly
